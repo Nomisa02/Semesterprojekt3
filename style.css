@@ -1,15 +1,16 @@
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
 
 .menu {
-    text-align: center;
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
 }
 
 .item {
@@ -33,4 +34,33 @@ body {
     padding: 10px;
     font-size: 18px;
     cursor: auto;
+}
+
+.separator {
+    width: 5px;
+    background-color: #ccc;
+    cursor: col-resize;
+}
+
+.content {
+    margin-left: 205px;
+    padding: 10px;
+    flex-grow: 1;
+}
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.buy-button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.buy-button:hover {
+    background-color: #0056b3;
 }

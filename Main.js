@@ -4,8 +4,8 @@ const db = require('./database');
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 790,
+        height: 470,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: false,
