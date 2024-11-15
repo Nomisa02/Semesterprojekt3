@@ -129,6 +129,7 @@
   <ItemGroup>
     <None Include="index.html" />
     <None Include="Main.js" />
+    <None Include="package.json" />
     <None Include="script.js" />
     <None Include="style.css" />
   </ItemGroup>

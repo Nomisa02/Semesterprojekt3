@@ -27,5 +27,8 @@
     <None Include="Main.js">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="package.json">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
