@@ -30,5 +30,8 @@
     <None Include="package.json">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="database.js">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

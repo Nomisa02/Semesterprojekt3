@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="database.js" />
     <None Include="index.html" />
     <None Include="Main.js" />
     <None Include="package.json" />
