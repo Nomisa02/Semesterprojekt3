@@ -12,19 +12,28 @@ function clickBox() {
 }
 
 function clickBox1() {
-    window.location.href = 'Page1.html';
+    fetch('Page1.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("content").innerHTML = data;
+        });
 }
 
 function clickBox2() {
-    alert('You clicked the box!');
-    db.saveSelection('Box');
+    fetch('Page2.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("content").innerHTML = data;
+        });
 }
 
 function clickBox3() {
-    alert('You clicked the box!');
-    db.saveSelection('Box');
+    fetch('Page3.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("content").innerHTML = data;
+        });
 }
-
 
 function inputChanged() {
     const inputField = document.getElementById('inputField');
