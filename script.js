@@ -1,81 +1,69 @@
 const { ipcRenderer } = require('electron');
 const db = require('./database');
 
+let basket = [];
+
 function buyItem(itemName) {
     alert(`You have selected ${itemName}`);
-    db.saveSelection(itemName);
+    addToBasket(itemName);
 }
 
-function clickBox() {
-    alert('You clicked the box!');
-    db.saveSelection('Box');
+function addToBasket(itemName) {
+    basket.push(itemName);
+    updateBasketUI();
 }
 
-function clickBox1() {
-    fetch('Page1.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("content").innerHTML = data;
-        });
+function updateBasketUI() {
+    const basketItems = document.getElementById('basketItems');
+    basketItems.innerHTML = '';
+    basket.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        basketItems.appendChild(li);
+    });
 }
 
-function clickBox2() {
-    fetch('Page2.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("content").innerHTML = data;
-        });
+function confirmBasket() {
+    if (basket.length > 0) {
+        basket.forEach(item => db.saveSelection(item));
+        alert('Basket confirmed and saved to the database.');
+        basket = [];
+        updateBasketUI();
+    } else {
+        alert('Basket is empty.');
+    }
 }
 
-function clickBox3() {
-    fetch('Page3.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("content").innerHTML = data;
-        });
+function clickBox(item) {
+    if (item) {
+        alert(`You have selected: ${item}`);
+        addToBasket(item);
+    } else {
+        alert('No item provided.');
+    }
 }
 
 function inputChanged() {
     const inputField = document.getElementById('inputField');
     alert(`Input value: ${inputField.value}`);
-    db.saveSelection(`Input: ${inputField.value}`);
+    addToBasket(`Input: ${inputField.value}`);
 }
 
 function inputButtonClicked() {
     const inputField = document.getElementById('inputField');
     alert(`Input value: ${inputField.value}`);
-    db.saveSelection(`Input: ${inputField.value}`);
+    addToBasket(`Input: ${inputField.value}`);
 }
 
-function dropdownChanged() {
-    var dropdown = document.getElementById("dropdown");
-    var selectedValue = dropdown.value;
-    fetch(selectedValue)
+function loadPage(page) {
+    fetch(page)
         .then(response => response.text())
         .then(data => {
             document.getElementById("content").innerHTML = data;
         });
 }
 
-
 function buttonClicked() {
     console.log("Button clicked!");
-    db.saveSelection('Button');
-}
-
-function inputButtonClicked() {
-    var inputField = document.getElementById("inputField");
-    console.log("Input submitted:", inputField.value);
-    db.saveSelection('Inputbutton');
-}
-
-function buyBeer() {
-    // Assuming you have a function in database.js to handle the database entry
-    console.log("Beer added!");
-    db.saveSelection('Beer');
-}
-
-function buyWater() {
-    console.log("Water added!")
-    db.saveSelection('Water')
+    addToBasket('Button');
 }

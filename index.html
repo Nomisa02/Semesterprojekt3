@@ -4,15 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Navigation</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="menu">
         <h1>Menu</h1>
-        <div class="clickable-box" onclick="clickBox1()">For diverse</div>
-        <div class="clickable-box" onclick="clickBox2()">FOr beer</div>
-        <div class="clickable-box" onclick="clickBox3()">For water</div>
-
+        <div class="clickable-box" onclick="loadPage('page1.html')">For diverse</div>
+        <div class="clickable-box" onclick="loadPage('page2.html')">For Øl</div>
+        <div class="clickable-box" onclick="loadPage('page3.html')">For Vand</div>
+        <div class="basket" id="basket">
+            <h2>Basket</h2>
+            <ul id="basketItems"></ul>
+            <button onclick="confirmBasket()">Confirm</button>
+        </div>
     </div>
     <div class="separator"></div>
     <div class="content" id="content">
