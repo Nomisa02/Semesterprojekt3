@@ -122,3 +122,37 @@ body {
 .basket button:hover {
     background-color: #218838;
 }
+
+
+.confirm-btn {
+    background-color: #28a745;
+}
+
+.cancel-btn {
+    background-color: #dc3545;
+    margin-left: 10px;
+}
+
+.basket button {
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.basket button:hover {
+    filter: brightness(90%);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.grid-container .clickable-box {
+    margin: 0;
+}

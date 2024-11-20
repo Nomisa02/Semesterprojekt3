@@ -34,9 +34,14 @@ function confirmBasket() {
     }
 }
 
+function cancelBasket() {
+    basket = [];
+    updateBasketUI();
+    alert('Basket cleared.');
+}
+
 function clickBox(item) {
     if (item) {
-        alert(`You have selected: ${item}`);
         addToBasket(item);
     } else {
         alert('No item provided.');
