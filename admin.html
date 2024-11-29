@@ -1,0 +1,25 @@
+<h1>Price Management</h1>
+<div id="priceList">
+    <!-- Prices will be loaded here -->
+</div>
+
+<script>
+async function loadPrices() {
+    const prices = await window.api.getPrices();
+    const container = document.getElementById('priceList');
+    container.innerHTML = prices.map(p => `
+        <div class="price-item">
+            <span>${p.item}</span>
+            <input type="number" value="${p.price}" 
+                   onchange="updatePrice('${p.item}', this.value)">
+        </div>
+    `).join('');
+}
+
+async function updatePrice(item, newPrice) {
+    await window.api.updatePrice(item, newPrice);
+    alert('Price updated');
+}
+
+loadPrices();
+</script>
