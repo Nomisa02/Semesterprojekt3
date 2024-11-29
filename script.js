@@ -8,8 +8,8 @@ function buyItem(itemName) {
     addToBasket(itemName);
 }
 
-function addToBasket(itemName) {
-    basket.push(itemName);
+function addToBasket(itemName, price) {
+    basket.push({ name: itemName, price: price });
     updateBasketUI();
 }
 
@@ -18,14 +18,20 @@ function updateBasketUI() {
     basketItems.innerHTML = '';
     basket.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = item;
+        li.textContent = `${item.name} - ${item.price}kr`;
         basketItems.appendChild(li);
     });
 }
 
 function confirmBasket() {
     if (basket.length > 0) {
-        basket.forEach(item => db.saveSelection(item));
+        basket.forEach(item => {
+            db.saveSelection({
+                name: item.name,
+                price: item.price,
+                timestamp: new Date()
+            });
+        });
         alert('Basket confirmed and saved to the database.');
         basket = [];
         updateBasketUI();
@@ -40,11 +46,11 @@ function cancelBasket() {
     alert('Basket cleared.');
 }
 
-function clickBox(item) {
-    if (item) {
-        addToBasket(item);
+function clickBox(item, price) {
+    if (item && price) {
+        addToBasket(item, price);
     } else {
-        alert('No item provided.');
+        alert('Missing item or price information.');
     }
 }
 

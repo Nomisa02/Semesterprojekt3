@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f4f4f4;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container a {
+            text-decoration: none;
+            background: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transaction List</h1>
+        <ul id="transactionList">
+            <!-- Transactions will be listed here -->
+        </ul>
+        <div class="button-container">
+            <a href="changeMenu.html">Ændre Menu</a>
+        </div>
+    </div>
+
+    <script>
+        // Example data, replace with your actual data
+        const menuSelections = [
+            'Transaction 1',
+            'Transaction 2',
+            'Transaction 3'
+        ];
+
+        const transactionList = document.getElementById('transactionList');
+
+        menuSelections.forEach(transaction => {
+            const li = document.createElement('li');
+            li.textContent = transaction;
+            transactionList.appendChild(li);
+        });
+    </script>
+</body>
+</html></div></ul>
