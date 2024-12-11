@@ -1,11 +1,63 @@
-<h1>For diverse</h1>
-<div class="grid-container">
-    <div class="clickable-box" onclick="clickBox('Coca Cola', 45)">Coca Cola , 45kr</div>
-    <div class="clickable-box" onclick="clickBox('Pepsi', 40)">Pepsi , 40kr</div>
-    <div class="clickable-box" onclick="clickBox('Fanta', 45)">Fanta , 45kr</div>
-    <div class="clickable-box" onclick="clickBox('Sprite', 45)">Sprite , 45kr</div>
-    <div class="clickable-box" onclick="clickBox('Dr Pepper', 45)">Dr Pepper , 45kr</div>
-    <div class="clickable-box" onclick="clickBox('Mountain Dew', 45)">Mountain Dew , 45kr</div>
-    <div class="clickable-box" onclick="clickBox('7 Up', 40)">7 Up , 40kr</div>
-    <div class="clickable-box" onclick="clickBox('Schweppes', 40)">Schweppes , 40kr</div>
+<h1>Beer Menu</h1>
+<div id="menu">
+    <p id="status">Loading menu...</p>
 </div>
+
+<script>
+console.log('Script starting...');
+
+async function loadMenu() {
+    const status = document.getElementById('status');
+    try {
+        // Platform-agnostic API check
+        if (typeof window.api === 'undefined') {
+            throw new Error('API not initialized');
+        }
+
+        status.textContent = 'Connecting to database...';
+        
+        // Use try-catch for API calls that might fail on different platforms
+        let prices;
+        try {
+            prices = await window.api.getPrices();
+            console.log('Prices received:', prices);
+        } catch (apiError) {
+            throw new Error(`Database connection failed: ${apiError.message}`);
+        }
+
+        if (!Array.isArray(prices)) {
+            throw new Error('Invalid data format received from database');
+        }
+
+        const beerItems = prices.filter(item => item.category === 'Beer');
+        console.log('Beer items:', beerItems);
+
+        if (beerItems.length === 0) {
+            throw new Error('No beer items found in database');
+        }
+
+        // Render items with error boundary
+        const container = document.getElementById('menu');
+        try {
+            container.innerHTML = `
+                <div class="grid-container">
+                    ${beerItems.map(p => `
+                        <div class="clickable-box" onclick="clickBox('${p.item}', ${p.price})">
+                            ${p.item} , ${p.price}kr
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } catch (renderError) {
+            throw new Error(`Failed to render menu: ${renderError.message}`);
+        }
+    } catch (error) {
+        console.error('Menu error:', error);
+        document.getElementById('menu').innerHTML = 
+            `<p>Error: ${error.message}</p>`;
+    }
+}
+
+// Delay initialization to ensure API is ready
+document.addEventListener('DOMContentLoaded', loadMenu);
+</script>

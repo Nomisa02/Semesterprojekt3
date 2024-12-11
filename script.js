@@ -1,6 +1,3 @@
-const { ipcRenderer } = require('electron');
-const db = require('./database');
-
 let basket = [];
 
 function buyItem(itemName) {

@@ -8,38 +8,57 @@ db.serialize(() => {
         price DECIMAL(10,2),
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
+    
+    db.run(`CREATE TABLE IF NOT EXISTS prices (
+        id INTEGER PRIMARY KEY,
+        item TEXT UNIQUE,
+        price DECIMAL(10,2),
+        category TEXT
+    )`);
+    
+    // Insert default prices with categories
+    db.get("SELECT COUNT(*) as count FROM prices", [], (err, row) => {
+        if (row.count === 0) {
+            const defaults = [
+                ['Coca Cola', 45, 'Soda'],
+                ['Pepsi', 40, 'Soda'],
+                ['Fanta', 45, 'Soda'],
+                ['Tuborg Classic', 50, 'Beer'],
+                ['Royal', 45, 'Beer'],
+                ['Breezers Orange', 55, 'Alcohol'],
+                ['Water', 20, 'Other']
+            ];
+            defaults.forEach(([item, price, category]) => {
+                db.run("INSERT INTO prices (item, price, category) VALUES (?, ?, ?)", 
+                    [item, price, category]);
+            });
+        }
+    });
 });
 
-function saveSelection(item) {
-    console.log('Saving item:', item); // Debug log
+// Database functions
+const databaseAPI = {
+    getPrices: () => {
+        return new Promise((resolve, reject) => {
+            db.all("SELECT * FROM prices", [], (err, rows) => {
+                if (err) reject(err);
+                else resolve(rows);
+            });
+        });
+    },
 
-    if (!item.name || item.price === undefined) {
-        console.error('Invalid item data:', item);
-        return;
+    saveSelection: (item) => {
+        return new Promise((resolve, reject) => {
+            db.run(
+                "INSERT INTO selections (item, price) VALUES (?, ?)",
+                [item.name, item.price],
+                function(err) {
+                    if (err) reject(err);
+                    else resolve(this.lastID);
+                }
+            );
+        });
     }
+};
 
-    db.run(
-        "INSERT INTO selections (item, price) VALUES (?, ?)", 
-        [item.name, item.price], 
-        function(err) {
-            if (err) {
-                console.error('Database error:', err.message);
-                return;
-            }
-            console.log(`Saved: ${item.name} at ${item.price}kr with ID ${this.lastID}`);
-        }
-    );
-}
-
-// Add function to verify data
-function getAllSelections() {
-    db.all("SELECT * FROM selections", [], (err, rows) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        console.log('Current database contents:', rows);
-    });
-}
-
-module.exports = { saveSelection, getAllSelections };
+module.exports = databaseAPI;
