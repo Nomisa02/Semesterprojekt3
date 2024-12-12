@@ -156,3 +156,12 @@ body {
 .grid-container .clickable-box {
     margin: 0;
 }
+
+.category-section {
+    margin-bottom: 2rem;
+}
+
+.category-section h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
