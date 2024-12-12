@@ -1,17 +1,16 @@
-// main.js
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const db = require('./database');
 
-// Platform-specific settings
-if (process.platform === 'linux') {
-    // Disable GPU acceleration on Linux to avoid X11 issues
-    app.commandLine.appendSwitch('disable-gpu');
-    app.commandLine.appendSwitch('no-sandbox');
-    app.disableHardwareAcceleration();
-    // Set display environment variable
-    process.env.DISPLAY = ':0';
-}
+// Additional flags for Raspberry Pi compatibility
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('no-sandbox');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+app.commandLine.appendSwitch('use-gl=swiftshader');
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
+app.commandLine.appendSwitch('disable-gpu-sandbox');
+app.disableHardwareAcceleration();
 
 function createWindow() {
     const win = new BrowserWindow({
@@ -19,21 +18,19 @@ function createWindow() {
         height: 470,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true,
-            nodeIntegration: false,
+            contextIsolation: false,
+            nodeIntegration: true,
+            offscreen: true,
+            spareRenderer: true
         },
-        // Use software rendering
+        // Enhanced window options for Pi compatibility
         backgroundColor: '#ffffff',
         show: false,
         frame: true,
-        autoHideMenuBar: true,
-        // X11 specific options
-        x11: {
-            useXDG: true,
-            disableCompositingManager: true
-        }
+        autoHideMenuBar: true
     });
 
+    // Show window when ready to avoid white flashing
     win.once('ready-to-show', () => {
         win.show();
     });
@@ -43,9 +40,16 @@ function createWindow() {
 
 app.whenReady().then(() => {
     createWindow();
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
 });
 
-// Error handling
-process.on('uncaughtException', (error) => {
-    console.error('Uncaught exception:', error);
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
 });
